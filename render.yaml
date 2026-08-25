@@ -13,6 +13,6 @@ services:
       - key: SECRET_KEY
         generateValue: true
       - key: CORS_ORIGINS
-        value: "*"
+        value: "http://localhost:3000,https://*.vercel.app,https://vercel.app"
       - key: DATABASE_URL
         value: "sqlite:///./lifeos.db"

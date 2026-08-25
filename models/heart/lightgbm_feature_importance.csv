@@ -1,0 +1,13 @@
+feature,importance
+age_years,2166
+bmi,1721
+weight_kg,1197
+height_cm,1130
+systolic_bp_mmHg,972
+diastolic_bp_mmHg,471
+cholesterol_ordinal,448
+glucose_ordinal,268
+physical_activity,232
+sex,191
+smoking_status,105
+alcohol_status,99

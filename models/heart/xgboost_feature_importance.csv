@@ -1,0 +1,13 @@
+feature,importance
+systolic_bp_mmHg,0.35832644
+diastolic_bp_mmHg,0.21233884
+cholesterol_ordinal,0.15808831
+age_years,0.07132143
+physical_activity,0.038497478
+smoking_status,0.03560188
+glucose_ordinal,0.027467322
+bmi,0.026168538
+alcohol_status,0.022959098
+weight_kg,0.020750476
+sex,0.016486153
+height_cm,0.011994032

@@ -1,0 +1,36 @@
+# Virtual Environment & Python Cache
+.venv/
+venv/
+ENV/
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+
+# Large Non-Production Model Artifacts (> 50MB)
+models/heart/heart_random_forest_baseline.pkl
+models/diabetes/model.pkl
+models/**/raw_*.pkl
+
+# SQLite Database Files
+*.db
+*.sqlite3
+lifeos.db
+
+# Environment Files with Sensitive Keys
+.env
+.env.local
+
+# IDE & OS Artifacts
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs & Temporary Data
+*.log
+scratch/

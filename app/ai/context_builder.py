@@ -125,6 +125,26 @@ class ContextBuilder:
         if trend_str:
             lines.append(f"Trend Observation: {trend_str}")
 
+        # Layer E Adaptive Personal Baselines & Longitudinal Trends
+        if db is not None:
+            try:
+                from app.services.adaptive.baseline_service import get_user_baselines
+                from app.services.adaptive.trend_service import evaluate_longitudinal_trends
+
+                baselines = get_user_baselines(db, user_id)
+                adaptive_trends = evaluate_longitudinal_trends(db, user_id)
+                
+                lines.append("=== LAYER E ADAPTIVE INTELLIGENCE (Personal Baselines & Trends) ===")
+                for b in baselines:
+                    if b.rolling_7_day_avg is not None and b.rolling_30_day_avg is not None:
+                        lines.append(f"  - {b.metric.replace('_', ' ').title()}: 7d Avg = {b.rolling_7_day_avg:.1f}, 30d Avg = {b.rolling_30_day_avg:.1f} (Trend: {b.trend})")
+                if adaptive_trends.get("declines"):
+                    lines.append(f"  - Declining Metrics: {', '.join(adaptive_trends['declines'])}")
+                if adaptive_trends.get("improvements"):
+                    lines.append(f"  - Improving Metrics: {', '.join(adaptive_trends['improvements'])}")
+            except Exception as err:
+                pass
+
         formatted_str = "\n".join(lines)
 
         return UserHealthContext(

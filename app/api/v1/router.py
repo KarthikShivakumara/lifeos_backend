@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 
 from app.api.v1.endpoints import (
+    adaptive,
     admin,
     assessments,
     assistant,
@@ -50,3 +51,4 @@ api_router.include_router(ckd.router)
 api_router.include_router(sleep.router)
 api_router.include_router(nutrition.router, prefix="/nutrition", tags=["nutrition"])
 api_router.include_router(risk_fusion.router)
+api_router.include_router(adaptive.router)

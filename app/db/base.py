@@ -16,3 +16,11 @@ from app.models.risk_fusion_result import RiskFusionResultModel  # noqa: F401
 from app.models.sensor_data import SensorData  # noqa: F401
 from app.models.shap_result import SHAPResult  # noqa: F401
 from app.models.user import User  # noqa: F401
+from app.models.adaptive import (  # noqa: F401
+    DriftReport,
+    HealthEvent,
+    OutcomeRecord,
+    PredictionSnapshot,
+    RecommendationFeedback,
+    UserBaseline,
+)

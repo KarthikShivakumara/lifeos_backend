@@ -5,7 +5,7 @@ services:
     region: singapore
     plan: free
     buildCommand: "pip install -r requirements.txt"
-    startCommand: "gunicorn -w 2 -k uvicorn.workers.UvicornWorker app.main:app"
+    startCommand: "gunicorn -w 2 -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:$PORT app.main:app"
     healthCheckPath: /health
     envVars:
       - key: ENVIRONMENT

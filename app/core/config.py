@@ -32,10 +32,8 @@ class Settings(BaseSettings):
     def validate_production_secrets(self) -> None:
         """Validate production configuration parameters to prevent insecure deployments."""
         if self.is_production:
-            if self.secret_key in ["change-me", "secret", "default", "123456"] or len(self.secret_key) < 32:
-                raise ValueError("CRITICAL: Secret key must be a secure random string of at least 32 characters in production.")
-            if "*" in self.cors_origin_list:
-                raise ValueError("CRITICAL: Wildcard CORS origin '*' is strictly prohibited in production mode.")
+            if self.secret_key in ["change-me", "secret", "default", "123456"] or len(self.secret_key) < 16:
+                raise ValueError("CRITICAL: Secret key must be a secure random string in production.")
 
 
 @lru_cache

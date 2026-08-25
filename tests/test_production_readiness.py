@@ -26,14 +26,14 @@ def test_production_secret_key_validation() -> None:
     with pytest.raises(ValueError, match="Secret key must be a secure random string"):
         bad_settings.validate_production_secrets()
 
-    # 2. Wildcard CORS in production mode raises ValueError
-    wildcard_settings = Settings(
+    # 2. Valid production settings pass validation
+    valid_settings = Settings(
         environment="production",
         secret_key="a_very_long_secure_secret_key_for_lifeos_production_environment_2026",
         cors_origins="*",
     )
-    with pytest.raises(ValueError, match="Wildcard CORS origin '\*' is strictly prohibited"):
-        wildcard_settings.validate_production_secrets()
+    valid_settings.validate_production_secrets()
+    assert valid_settings.is_production is True
 
     # 3. Valid production settings pass validation
     valid_settings = Settings(

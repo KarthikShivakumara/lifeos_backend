@@ -64,8 +64,11 @@ class SleepModelService:
         return cls._instance
 
     def _load_artifact(self) -> None:
-        root_dir = Path(__file__).resolve().parents[3]
-        model_path = root_dir / "models" / "sleep" / "sleep_final.pkl"
+        possible_paths = [
+            Path(__file__).resolve().parents[2] / "models" / "sleep" / "sleep_final.pkl",
+            Path(__file__).resolve().parents[3] / "models" / "sleep" / "sleep_final.pkl",
+        ]
+        model_path = next((p for p in possible_paths if p.exists()), possible_paths[0])
 
         if not model_path.exists():
             logger.warning(f"Sleep model artifact not found at {model_path}")

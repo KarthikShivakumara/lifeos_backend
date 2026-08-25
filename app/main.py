@@ -6,6 +6,12 @@ from typing import AsyncGenerator
 from fastapi import FastAPI, Request, Response, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from sklearn.impute import SimpleImputer
+
+if not hasattr(SimpleImputer, "_fill_dtype"):
+    SimpleImputer._fill_dtype = property(
+        lambda self: self.statistics_.dtype if hasattr(self, "statistics_") and self.statistics_ is not None else None
+    )
 
 from app.api.v1.endpoints.assistant import router as assistant_router
 from app.api.v1.endpoints.diabetes import router as diabetes_router

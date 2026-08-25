@@ -140,6 +140,18 @@ app.include_router(notifications_router, prefix="/api")
 app.include_router(assistant_router, prefix="/api")
 
 
+@app.get("/", tags=["Root"])
+def root() -> dict[str, str]:
+    return {
+        "service": "LifeOS Preventive Health Intelligence API",
+        "status": "healthy",
+        "version": "1.0.0",
+        "docs": "/docs",
+        "health": "/health",
+        "api_v1": "/api/v1",
+    }
+
+
 @app.get("/health", tags=["Health Check"])
 def health() -> dict[str, str]:
     heart_status = heart_service.get_health_status()

@@ -56,7 +56,14 @@ class ContextBuilder:
         disease_risks: dict[str, float] = {}
         top_shaps: dict[str, list[dict[str, Any]]] = {}
 
-        for k, name in [("heart", "Heart Disease"), ("diabetes", "Diabetes"), ("hypertension", "Hypertension"), ("obesity", "Obesity")]:
+        for k, name in [
+            ("heart", "Heart Disease"),
+            ("diabetes", "Diabetes"),
+            ("hypertension", "Hypertension"),
+            ("obesity", "Obesity"),
+            ("stroke", "Stroke Risk"),
+            ("ckd", "Chronic Kidney Disease"),
+        ]:
             d_res = dis.get(k)
             if d_res:
                 pred = d_res.get("prediction") if isinstance(d_res, dict) else None

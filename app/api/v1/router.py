@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 
 from app.api.v1.endpoints import (
+    activity,
     adaptive,
     admin,
     assessments,
@@ -8,6 +9,7 @@ from app.api.v1.endpoints import (
     auth,
     ckd,
     coach,
+    demo,
     diabetes,
     heart,
     history,
@@ -49,6 +51,8 @@ api_router.include_router(obesity.router)
 api_router.include_router(stroke.router)
 api_router.include_router(ckd.router)
 api_router.include_router(sleep.router)
+api_router.include_router(activity.router)
 api_router.include_router(nutrition.router, prefix="/nutrition", tags=["nutrition"])
 api_router.include_router(risk_fusion.router)
 api_router.include_router(adaptive.router)
+api_router.include_router(demo.router, prefix="/demo", tags=["demo"])

@@ -86,12 +86,22 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-# 1. CORS Middleware
+# 1. CORS Middleware (Secured with Vercel regex & credentials)
+cors_origins = [
+    origin.strip()
+    for origin in settings.cors_origins.split(",")
+    if origin.strip()
+]
+for default_origin in ["http://localhost:3000", "http://127.0.0.1:3000", "https://lifeos.health"]:
+    if default_origin not in cors_origins:
+        cors_origins.append(default_origin)
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=False,
-    allow_methods=["*"],
+    allow_origins=cors_origins,
+    allow_origin_regex=r"^https://.*\.vercel\.app$",
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
     allow_headers=["*"],
 )
 

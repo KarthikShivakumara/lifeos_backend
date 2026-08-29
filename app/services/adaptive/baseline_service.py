@@ -1,5 +1,4 @@
-from __future__ import annotations
-
+import json
 import logging
 from datetime import datetime, timedelta
 from typing import Any
@@ -34,30 +33,52 @@ def _extract_metric_time_series(db: Session, user_id: str, metric: str) -> list[
     """Extracts timestamped numerical observations for a given metric across snapshots, assessments, and events."""
     points: list[tuple[datetime, float]] = []
 
-    # 1. From HealthSnapshots
+    # 1. From HealthSnapshots (JSON fields)
     snapshots = db.query(HealthSnapshotModel).filter(HealthSnapshotModel.user_id == user_id).all()
     for snap in snapshots:
         val = None
+        input_data = {}
+        if snap.assessment_input_json:
+            try:
+                input_data = json.loads(snap.assessment_input_json)
+            except Exception:
+                input_data = {}
+
         if metric == "weight":
-            val = snap.weight_kg
+            val = input_data.get("weight_kg") or input_data.get("weight")
         elif metric == "bmi":
-            val = snap.bmi
+            val = input_data.get("bmi")
         elif metric == "systolic_bp":
-            val = snap.systolic_bp
+            val = input_data.get("systolic_bp") or input_data.get("systolic_bp_mmHg")
         elif metric == "diastolic_bp":
-            val = snap.diastolic_bp
+            val = input_data.get("diastolic_bp") or input_data.get("diastolic_bp_mmHg")
         elif metric == "glucose":
-            val = snap.blood_glucose
+            val = input_data.get("blood_glucose") or input_data.get("glucose") or input_data.get("blood_glucose_level")
         elif metric == "sleep_hours":
-            val = snap.sleep_hours
+            val = input_data.get("sleep_hours")
         elif metric == "steps":
-            val = snap.steps
+            val = input_data.get("steps") or input_data.get("daily_steps")
         elif metric == "active_minutes":
-            val = snap.active_minutes
+            val = input_data.get("active_minutes")
         elif metric == "calories":
-            val = snap.calories_burned
+            val = input_data.get("calories") or input_data.get("calories_burned")
         if val is not None:
             points.append((snap.created_at, float(val)))
+
+    # 2. From HealthAssessments
+    assessments = db.query(HealthAssessment).filter(HealthAssessment.user_id == user_id).all()
+    for assess in assessments:
+        val = None
+        if metric == "bmi":
+            val = assess.bmi
+        elif metric == "systolic_bp":
+            val = assess.systolic_bp
+        elif metric == "diastolic_bp":
+            val = assess.diastolic_bp
+        elif metric == "sleep_hours":
+            val = assess.sleep_hours
+        if val is not None:
+            points.append((assess.created_at, float(val)))
 
     # 2. From HealthEvents
     events = (

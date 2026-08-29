@@ -24,6 +24,7 @@ from app.api.v1.endpoints import (
     risk_fusion,
     sensors,
     sleep,
+    stress,
     stroke,
     twin,
     users,
@@ -51,7 +52,9 @@ api_router.include_router(obesity.router)
 api_router.include_router(stroke.router)
 api_router.include_router(ckd.router)
 api_router.include_router(sleep.router)
+api_router.include_router(stress.router)
 api_router.include_router(activity.router)
+
 api_router.include_router(nutrition.router, prefix="/nutrition", tags=["nutrition"])
 api_router.include_router(risk_fusion.router)
 api_router.include_router(adaptive.router)

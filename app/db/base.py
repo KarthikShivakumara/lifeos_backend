@@ -24,3 +24,5 @@ from app.models.adaptive import (  # noqa: F401
     RecommendationFeedback,
     UserBaseline,
 )
+from app.models.stress_checkin import StressCheckin  # noqa: F401
+

@@ -29,6 +29,21 @@ class ContextBuilder:
     def build_user_context(self, user_id: str, db: Session | None = None) -> UserHealthContext:
         snaps = history_service.get_history(user_id=user_id, db=db).snapshots
         if not snaps:
+            lines = ["No completed health assessment recorded for this user yet."]
+            if db is not None:
+
+                try:
+                    from app.services.stress_wellness_service import stress_wellness_service
+                    curr_stress = stress_wellness_service.get_current_stress(db, user_id)
+                    if curr_stress.current_index is not None:
+                        lines.append(
+                            f"Layer B Wellness Context - LifeOS Stress Wellness Index: {curr_stress.current_index:.1f}/100 "
+                            f"(Level: {str(curr_stress.current_level).upper()}, 7d Avg: {curr_stress.rolling_7d_avg or 'N/A'}, "
+                            f"Trend: {curr_stress.trend}) [Non-diagnostic observational wellness indicator. Do NOT infer psychiatric conditions.]"
+                        )
+                except Exception:
+                    pass
+
             return UserHealthContext(
                 user_id=user_id,
                 has_assessment=False,
@@ -40,8 +55,9 @@ class ContextBuilder:
                 top_shap_contributors={},
                 recommendations_summary=[],
                 trend_summary=None,
-                formatted_context_str="No completed health assessment recorded for this user yet.",
+                formatted_context_str="\n".join(lines),
             )
+
 
         latest_snap = snaps[0]
         rf = latest_snap.risk_fusion or {}
@@ -131,6 +147,21 @@ class ContextBuilder:
 
         if trend_str:
             lines.append(f"Trend Observation: {trend_str}")
+
+        # Layer B Wellness Context - Stress Intelligence V2
+        if db is not None:
+            try:
+                from app.services.stress_wellness_service import stress_wellness_service
+                curr_stress = stress_wellness_service.get_current_stress(db, user_id)
+                if curr_stress.current_index is not None:
+                    lines.append(
+                        f"Layer B Wellness Context - LifeOS Stress Wellness Index: {curr_stress.current_index:.1f}/100 "
+                        f"(Level: {str(curr_stress.current_level).upper()}, 7d Avg: {curr_stress.rolling_7d_avg or 'N/A'}, "
+                        f"Trend: {curr_stress.trend}) [Non-diagnostic observational wellness indicator. Do NOT infer psychiatric conditions.]"
+                    )
+            except Exception as err:
+                pass
+
 
         # Layer E Adaptive Personal Baselines & Longitudinal Trends
         if db is not None:

@@ -14,7 +14,9 @@ STRICT OPERATIONAL RULES:
 6. If evidence or user data is insufficient, state it clearly without inventing laboratory values.
 7. Always encourage consulting a primary care physician for clinical evaluation.
 8. NEVER prescribe medication dosages or alter prescription regimens.
+9. Stress Intelligence is a self-reported wellness indicator (Layer B), NOT a clinical psychiatric diagnosis. Do NOT infer anxiety disorders, depression, or psychiatric conditions. Distinguish observational associations from causal conclusions.
 """
+
 
 
 def build_assistant_prompt(
